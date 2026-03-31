@@ -1,0 +1,29 @@
+{
+  "bundles": {
+    "starter": {
+      "description": "Complete starter environment with development, media, productivity, and communication tools.",
+      "packages": [
+        "RProject.R",
+        "Brave.Brave",
+        "AntiGravity",
+        "Microsoft.VisualStudioCode",
+        "OpenJS.NodeJS",
+        "Python.Python.3.11",
+        "Git.Git",
+        "qBittorrent.qBittorrent",
+        "TimKosse.FileZillaClient",
+        "Discord.Discord",
+        "LocalSend.LocalSend",
+        "Blanket",
+        "AppFlowy.AppFlowy",
+        "ONLYOFFICE.DesktopEditors",
+        "Audacity.Audacity",
+        "OBSProject.OBSStudio",
+        "VideoLAN.VLC",
+        "KDE.Kdenlive",
+        "KeyKdenlive",
+        "AnyDeskSoftwareGmbH.AnyDesk"
+      ]
+    }
+  }
+}
