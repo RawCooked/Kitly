@@ -1,6 +1,6 @@
 {
   "bundles": {
-    "starter": {
+    "Personal": {
       "description": "Complete starter environment with development, media, productivity, and communication tools.",
       "packages": [
         "RProject.R",
@@ -22,7 +22,94 @@
         "VideoLAN.VLC",
         "KDE.Kdenlive",
         "KeyKdenlive",
-        "AnyDeskSoftwareGmbH.AnyDesk"
+        "AnyDeskSoftwareGmbH.AnyDesk",
+        "Postman.Postman"
+      ]
+    },
+    "essential": {
+      "description": "The bare minimum every clean Windows installation needs.",
+      "packages": [
+        "7zip.7zip",
+        "Google.Chrome",
+        "VideoLAN.VLC",
+        "Notepad++.Notepad++",
+        "voidtools.Everything",
+        "Microsoft.PowerToys"
+      ]
+    },
+    "dev-frontend": {
+      "description": "Essential tools for Frontend Web Development.",
+      "packages": [
+        "Microsoft.VisualStudioCode",
+        "OpenJS.NodeJS",
+        "Git.Git",
+        "Google.Chrome",
+        "Mozilla.Firefox",
+        "Figma.Figma",
+        "Postman.Postman"
+      ]
+    },
+    "dev-backend": {
+      "description": "Essential tools for Backend Development and APIs.",
+      "packages": [
+        "Docker.DockerDesktop",
+        "Python.Python.3.11",
+        "Git.Git",
+        "Postman.Postman",
+        "dbeaver.dbeaver",
+        "Amazon.AWSCLI"
+      ]
+    },
+    "dev-csharp": {
+      "description": "Standard .NET & C# development environment.",
+      "packages": [
+        "Microsoft.VisualStudio.2022.Community",
+        "Microsoft.DotNet.SDK.8",
+        "Microsoft.SQLServerManagementStudio",
+        "Git.Git",
+        "Postman.Postman"
+      ]
+    },
+    "gaming": {
+      "description": "Standard launchers and gaming communication tools.",
+      "packages": [
+        "Valve.Steam",
+        "Discord.Discord",
+        "EpicGames.EpicGamesLauncher",
+        "Nvidia.GeForceExperience",
+        "GOG.Galaxy"
+      ]
+    },
+    "office": {
+      "description": "Office productivity, communication, and document tools.",
+      "packages": [
+        "TheDocumentFoundation.LibreOffice",
+        "SumatraPDF.SumatraPDF",
+        "Zoom.Zoom",
+        "SlackTechnologies.Slack",
+        "7zip.7zip"
+      ]
+    },
+    "media-creator": {
+      "description": "Creative tools for video, audio, and image editing.",
+      "packages": [
+        "OBSProject.OBSStudio",
+        "BlackmagicDesign.DaVinciResolve",
+        "BlenderFoundation.Blender",
+        "Audacity.Audacity",
+        "GIMP.GIMP",
+        "KDE.Krita"
+      ]
+    },
+    "sysadmin": {
+      "description": "Network, server, and system administration tools.",
+      "packages": [
+        "PuTTY.PuTTY",
+        "MartinPrikryl.WinSCP",
+        "Notepad++.Notepad++",
+        "WireGuard.WireGuard",
+        "Microsoft.Sysinternals",
+        "WiresharkFoundation.Wireshark"
       ]
     }
   }
