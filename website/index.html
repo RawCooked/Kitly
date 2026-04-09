@@ -1,0 +1,539 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitly — One Command. Every Tool.</title>
+    <meta name="description" content="Kitly is a modern CLI tool for Windows that installs bundles of applications with a single command. Think Homebrew for Windows, powered by Winget.">
+    <meta name="keywords" content="kitly, windows, package manager, winget, CLI, bundle installer, developer tools">
+    <meta name="theme-color" content="#7C3AED">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Kitly — One Command. Every Tool.">
+    <meta property="og:description" content="Install bundles of applications with a single command. Your machine, ready in seconds.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://kitly.app">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- ═══════════════ NAVBAR ═══════════════ -->
+    <nav class="navbar" id="navbar">
+        <div class="nav-container">
+            <a href="#" class="nav-logo">
+                <div class="logo-icon">
+                    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <rect x="2" y="2" width="28" height="28" rx="8" fill="url(#logo-gradient)" />
+                        <path d="M10 8L10 24" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M10 16L18 8" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M10 16L18 24" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                        <path d="M22 8L22 24" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="3 4"/>
+                        <defs>
+                            <linearGradient id="logo-gradient" x1="0" y1="0" x2="32" y2="32">
+                                <stop stop-color="#7C3AED"/>
+                                <stop offset="1" stop-color="#D946EF"/>
+                            </linearGradient>
+                        </defs>
+                    </svg>
+                </div>
+                <span class="logo-text">kitly</span>
+            </a>
+
+            <div class="nav-links" id="navLinks">
+                <a href="#hero" class="nav-link">Home</a>
+                <a href="#features" class="nav-link">Features</a>
+                <a href="#bundles" class="nav-link">Bundles</a>
+                <a href="#about" class="nav-link">About</a>
+                <a href="https://github.com/YOUR_USERNAME/kitly" target="_blank" rel="noopener" class="nav-link nav-link-github">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+                    </svg>
+                    GitHub
+                </a>
+                <a href="#hero" class="nav-cta">Download</a>
+            </div>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle navigation">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ═══════════════ HERO ═══════════════ -->
+    <section class="hero" id="hero">
+        <!-- Animated background elements -->
+        <div class="hero-bg">
+            <div class="gradient-orb orb-1"></div>
+            <div class="gradient-orb orb-2"></div>
+            <div class="gradient-orb orb-3"></div>
+            <div class="grid-overlay"></div>
+        </div>
+
+        <div class="hero-content">
+            <div class="hero-badge">
+                <span class="badge-dot"></span>
+                Open Source CLI Tool for Windows
+            </div>
+
+            <h1 class="hero-title">
+                <span class="title-line">One command.</span>
+                <span class="title-line title-gradient">Every tool.</span>
+            </h1>
+
+            <p class="hero-subtitle">
+                Kitly installs bundles of applications with a single command.<br>
+                Think <strong>Homebrew for Windows</strong>, powered by Winget.
+            </p>
+
+            <!-- ═══ INSTALL COMMANDS — CENTRAL FOCUS ═══ -->
+            <div class="install-section" id="installSection">
+                <div class="install-tabs">
+                    <button class="install-tab active" data-tab="powershell" id="tabPowershell">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M23.181 2.974c.568.391.819 1.093.643 1.737L18.57 22.88c-.176.644-.77 1.12-1.47 1.12H2.29c-.7 0-1.168-.476-1.168-1.12 0-.183.05-.367.148-.536L6.524 12 1.27 1.656C.89.974 1.158.132 1.842.132h19.26c.627 0 1.168.476 1.168 1.12 0 .183-.05.367-.148.536L17.476 12l4.636 10.344"/></svg>
+                        PowerShell
+                    </button>
+                    <button class="install-tab" data-tab="cmd" id="tabCmd">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2 3h20v18H2V3zm2 2v14h16V5H4zm3 3l4 4-4 4 1.5 1.5L14 12 8.5 6.5 7 8zm6 8h5v1.5h-5V16z"/></svg>
+                        CMD
+                    </button>
+                </div>
+
+                <div class="install-panel active" id="panelPowershell">
+                    <div class="install-command">
+                        <div class="command-prefix">PS &gt;</div>
+                        <code class="command-text" id="cmdPowershell">iwr https://kitly.app/install.ps1 | iex</code>
+                        <button class="copy-btn" onclick="copyCommand('cmdPowershell')" aria-label="Copy to clipboard" id="copyBtnPs">
+                            <svg class="copy-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            <svg class="check-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="install-panel" id="panelCmd">
+                    <div class="install-command">
+                        <div class="command-prefix">C:\&gt;</div>
+                        <code class="command-text" id="cmdCmd">curl -L https://kitly.app/install.ps1 | powershell</code>
+                        <button class="copy-btn" onclick="copyCommand('cmdCmd')" aria-label="Copy to clipboard" id="copyBtnCmd">
+                            <svg class="copy-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            <svg class="check-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-actions">
+                <a href="#features" class="btn btn-primary">
+                    Explore Features
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><polyline points="19 12 12 19 5 12"></polyline></svg>
+                </a>
+                <a href="https://github.com/YOUR_USERNAME/kitly" target="_blank" rel="noopener" class="btn btn-ghost">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    View on GitHub
+                </a>
+            </div>
+
+            <!-- Floating terminal preview -->
+            <div class="hero-terminal">
+                <div class="terminal-bar">
+                    <div class="terminal-dots">
+                        <span class="dot dot-red"></span>
+                        <span class="dot dot-yellow"></span>
+                        <span class="dot dot-green"></span>
+                    </div>
+                    <span class="terminal-title">PowerShell</span>
+                </div>
+                <div class="terminal-body">
+                    <div class="terminal-line">
+                        <span class="t-prompt">PS C:\&gt;</span>
+                        <span class="t-cmd" id="typingCmd"></span>
+                        <span class="t-cursor">|</span>
+                    </div>
+                    <div class="terminal-output" id="terminalOutput"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            <div class="scroll-mouse">
+                <div class="scroll-dot"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ FEATURES ═══════════════ -->
+    <section class="features" id="features">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Why Kitly?</span>
+                <h2 class="section-title">Everything you need,<br><span class="text-gradient">nothing you don't.</span></h2>
+                <p class="section-subtitle">Kitly is designed to be simple, fast, and powerful. Set up your entire machine in under a minute.</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card" data-feature="1">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Lightning Fast</h3>
+                    <p class="feature-desc">Install 20+ apps with a single command. Kitly handles everything in parallel using Winget's engine.</p>
+                </div>
+
+                <div class="feature-card" data-feature="2">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"/>
+                            <line x1="12" y1="22.08" x2="12" y2="12"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Curated Bundles</h3>
+                    <p class="feature-desc">Pre-built bundles for developers, gamers, creators, and sysadmins. Or create your own custom bundles.</p>
+                </div>
+
+                <div class="feature-card" data-feature="3">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                            <path d="M7 11V7a5 5 0 0110 0v4"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Safe & Open Source</h3>
+                    <p class="feature-desc">100% open source. Every package is installed directly through Microsoft's official Winget repository.</p>
+                </div>
+
+                <div class="feature-card" data-feature="4">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Fully Extensible</h3>
+                    <p class="feature-desc">Create, share, and import bundles. Your packages.json is your portable setup — take it anywhere.</p>
+                </div>
+
+                <div class="feature-card" data-feature="5">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <polyline points="16 18 22 12 16 6"/>
+                            <polyline points="8 6 2 12 8 18"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Developer First</h3>
+                    <p class="feature-desc">Built by developers, for developers. Clean CLI interface with intuitive commands you already know.</p>
+                </div>
+
+                <div class="feature-card" data-feature="6">
+                    <div class="feature-icon">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M23 6l-9.5 9.5-5-5L1 18"/>
+                            <polyline points="17 6 23 6 23 12"/>
+                        </svg>
+                    </div>
+                    <h3 class="feature-title">Stay Updated</h3>
+                    <p class="feature-desc">Update all your apps with <code>kitly update</code>. Keep every tool in your bundle at the latest version.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ BUNDLES SHOWCASE ═══════════════ -->
+    <section class="bundles" id="bundles">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Bundles</span>
+                <h2 class="section-title">Curated for<br><span class="text-gradient">every workflow.</span></h2>
+                <p class="section-subtitle">Pick a bundle, run one command, and you're ready to go. No more clicking through 10 installers.</p>
+            </div>
+
+            <div class="bundles-grid">
+                <div class="bundle-card" data-bundle="essential">
+                    <div class="bundle-icon">🛡️</div>
+                    <h3 class="bundle-name">essential</h3>
+                    <p class="bundle-desc">The bare minimum every clean Windows install needs.</p>
+                    <div class="bundle-apps">
+                        <span class="app-tag">7-Zip</span>
+                        <span class="app-tag">Chrome</span>
+                        <span class="app-tag">VLC</span>
+                        <span class="app-tag">Notepad++</span>
+                        <span class="app-tag">Everything</span>
+                        <span class="app-tag">PowerToys</span>
+                    </div>
+                    <div class="bundle-cmd">
+                        <code>kitly install essential</code>
+                    </div>
+                </div>
+
+                <div class="bundle-card" data-bundle="dev-frontend">
+                    <div class="bundle-icon">🎨</div>
+                    <h3 class="bundle-name">dev-frontend</h3>
+                    <p class="bundle-desc">Essential tools for frontend web development.</p>
+                    <div class="bundle-apps">
+                        <span class="app-tag">VS Code</span>
+                        <span class="app-tag">Node.js</span>
+                        <span class="app-tag">Git</span>
+                        <span class="app-tag">Chrome</span>
+                        <span class="app-tag">Firefox</span>
+                        <span class="app-tag">Figma</span>
+                        <span class="app-tag">Postman</span>
+                    </div>
+                    <div class="bundle-cmd">
+                        <code>kitly install dev-frontend</code>
+                    </div>
+                </div>
+
+                <div class="bundle-card" data-bundle="dev-backend">
+                    <div class="bundle-icon">⚙️</div>
+                    <h3 class="bundle-name">dev-backend</h3>
+                    <p class="bundle-desc">Backend development and API tooling.</p>
+                    <div class="bundle-apps">
+                        <span class="app-tag">Docker</span>
+                        <span class="app-tag">Python</span>
+                        <span class="app-tag">Git</span>
+                        <span class="app-tag">Postman</span>
+                        <span class="app-tag">DBeaver</span>
+                        <span class="app-tag">AWS CLI</span>
+                    </div>
+                    <div class="bundle-cmd">
+                        <code>kitly install dev-backend</code>
+                    </div>
+                </div>
+
+                <div class="bundle-card" data-bundle="gaming">
+                    <div class="bundle-icon">🎮</div>
+                    <h3 class="bundle-name">gaming</h3>
+                    <p class="bundle-desc">Game launchers and communication tools.</p>
+                    <div class="bundle-apps">
+                        <span class="app-tag">Steam</span>
+                        <span class="app-tag">Discord</span>
+                        <span class="app-tag">Epic Games</span>
+                        <span class="app-tag">GeForce</span>
+                        <span class="app-tag">GOG Galaxy</span>
+                    </div>
+                    <div class="bundle-cmd">
+                        <code>kitly install gaming</code>
+                    </div>
+                </div>
+
+                <div class="bundle-card" data-bundle="media-creator">
+                    <div class="bundle-icon">🎬</div>
+                    <h3 class="bundle-name">media-creator</h3>
+                    <p class="bundle-desc">Creative tools for video, audio, and images.</p>
+                    <div class="bundle-apps">
+                        <span class="app-tag">OBS</span>
+                        <span class="app-tag">DaVinci</span>
+                        <span class="app-tag">Blender</span>
+                        <span class="app-tag">Audacity</span>
+                        <span class="app-tag">GIMP</span>
+                        <span class="app-tag">Krita</span>
+                    </div>
+                    <div class="bundle-cmd">
+                        <code>kitly install media-creator</code>
+                    </div>
+                </div>
+
+                <div class="bundle-card" data-bundle="sysadmin">
+                    <div class="bundle-icon">🖥️</div>
+                    <h3 class="bundle-name">sysadmin</h3>
+                    <p class="bundle-desc">Network, server, and system admin tools.</p>
+                    <div class="bundle-apps">
+                        <span class="app-tag">PuTTY</span>
+                        <span class="app-tag">WinSCP</span>
+                        <span class="app-tag">WireGuard</span>
+                        <span class="app-tag">Wireshark</span>
+                        <span class="app-tag">Sysinternals</span>
+                    </div>
+                    <div class="bundle-cmd">
+                        <code>kitly install sysadmin</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bundles-cta">
+                <p>Don't see what you need? <strong>Create your own bundle.</strong></p>
+                <div class="custom-bundle-demo">
+                    <code>kitly create my-tools VSCode Git.Git Python.Python.3.11</code>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ HOW IT WORKS ═══════════════ -->
+    <section class="how-it-works" id="how">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Getting Started</span>
+                <h2 class="section-title">Up and running<br><span class="text-gradient">in 30 seconds.</span></h2>
+            </div>
+
+            <div class="steps-grid">
+                <div class="step-card">
+                    <div class="step-number">01</div>
+                    <h3 class="step-title">Install Kitly</h3>
+                    <p class="step-desc">One command in PowerShell or CMD. Takes about 5 seconds.</p>
+                    <div class="step-code">
+                        <code>iwr https://kitly.app/install.ps1 | iex</code>
+                    </div>
+                </div>
+
+                <div class="step-connector">
+                    <svg viewBox="0 0 40 24" fill="none"><path d="M0 12h40M32 4l8 8-8 8" stroke="currentColor" stroke-width="2"/></svg>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">02</div>
+                    <h3 class="step-title">Pick a Bundle</h3>
+                    <p class="step-desc">Browse available bundles or create your own.</p>
+                    <div class="step-code">
+                        <code>kitly list</code>
+                    </div>
+                </div>
+
+                <div class="step-connector">
+                    <svg viewBox="0 0 40 24" fill="none"><path d="M0 12h40M32 4l8 8-8 8" stroke="currentColor" stroke-width="2"/></svg>
+                </div>
+
+                <div class="step-card">
+                    <div class="step-number">03</div>
+                    <h3 class="step-title">Install & Go</h3>
+                    <p class="step-desc">Run the install command and grab a coffee. Kitly handles the rest.</p>
+                    <div class="step-code">
+                        <code>kitly install dev-frontend</code>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ ABOUT ═══════════════ -->
+    <section class="about" id="about">
+        <div class="section-container">
+            <div class="about-wrapper">
+                <div class="about-visual">
+                    <div class="about-shape shape-1"></div>
+                    <div class="about-shape shape-2"></div>
+                    <div class="about-shape shape-3"></div>
+                    <div class="about-icon-grid">
+                        <div class="about-icon-item">📦</div>
+                        <div class="about-icon-item">⚡</div>
+                        <div class="about-icon-item">🧠</div>
+                        <div class="about-icon-item">🚀</div>
+                    </div>
+                </div>
+                <div class="about-content">
+                    <span class="section-tag">About the Creator</span>
+                    <h2 class="section-title">Built with <span class="text-gradient">passion.</span></h2>
+                    <p class="about-text">
+                        Kitly was created by a <strong>Computer Science Engineering student specialized in Artificial Intelligence</strong> 
+                        who was tired of spending hours reinstalling the same applications on every new machine.
+                    </p>
+                    <p class="about-text">
+                        The goal was simple: build a tool that makes setting up a Windows machine as effortless as it should be.
+                        No GUIs, no clicking through 15 installers — just one command and you're done.
+                    </p>
+                    <p class="about-text">
+                        Kitly is <strong>free, open source, and community-driven</strong>. Contributions, bundle suggestions, 
+                        and feedback are always welcome.
+                    </p>
+                    <a href="https://github.com/YOUR_USERNAME/kitly" target="_blank" rel="noopener" class="btn btn-primary">
+                        Contribute on GitHub
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ FINAL CTA ═══════════════ -->
+    <section class="final-cta">
+        <div class="section-container">
+            <div class="cta-content">
+                <h2 class="cta-title">Ready to set up<br>your machine?</h2>
+                <p class="cta-subtitle">Install Kitly in one command, then install everything else in another.</p>
+                <div class="cta-install">
+                    <div class="install-command cta-command">
+                        <div class="command-prefix">PS &gt;</div>
+                        <code class="command-text" id="cmdCtaPowershell">iwr https://kitly.app/install.ps1 | iex</code>
+                        <button class="copy-btn" onclick="copyCommand('cmdCtaPowershell')" aria-label="Copy to clipboard" id="copyBtnCta">
+                            <svg class="copy-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                                <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                            </svg>
+                            <svg class="check-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                                <polyline points="20 6 9 17 4 12"></polyline>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ FOOTER ═══════════════ -->
+    <footer class="footer">
+        <div class="section-container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <div class="nav-logo">
+                        <div class="logo-icon">
+                            <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <rect x="2" y="2" width="28" height="28" rx="8" fill="url(#logo-gradient-footer)" />
+                                <path d="M10 8L10 24" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                                <path d="M10 16L18 8" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                                <path d="M10 16L18 24" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+                                <path d="M22 8L22 24" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="3 4"/>
+                                <defs>
+                                    <linearGradient id="logo-gradient-footer" x1="0" y1="0" x2="32" y2="32">
+                                        <stop stop-color="#7C3AED"/>
+                                        <stop offset="1" stop-color="#D946EF"/>
+                                    </linearGradient>
+                                </defs>
+                            </svg>
+                        </div>
+                        <span class="logo-text">kitly</span>
+                    </div>
+                    <p class="footer-tagline">One command. Every tool.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-col">
+                        <h4>Product</h4>
+                        <a href="#features">Features</a>
+                        <a href="#bundles">Bundles</a>
+                        <a href="#how">Getting Started</a>
+                    </div>
+                    <div class="footer-col">
+                        <h4>Community</h4>
+                        <a href="https://github.com/YOUR_USERNAME/kitly" target="_blank" rel="noopener">GitHub</a>
+                        <a href="https://github.com/YOUR_USERNAME/kitly/issues" target="_blank" rel="noopener">Issues</a>
+                        <a href="https://github.com/YOUR_USERNAME/kitly/discussions" target="_blank" rel="noopener">Discussions</a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2026 Kitly. Open source under MIT License.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
