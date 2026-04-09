@@ -16,7 +16,7 @@ $ErrorActionPreference = "Stop"
 # ─── Configuration ──────────────────────────────────────────────────────
 $KitlyVersion   = "1.0.0"
 $InstallDir     = "C:\kitly"
-$GithubRepo     = "https://raw.githubusercontent.com/YOUR_USERNAME/kitly/main"
+$GithubRepo     = "https://rawcooked.github.io/Kitly/"
 $RequiredFiles  = @("kitly.ps1", "utils.ps1", "packages.json")
 
 # ─── UI Helpers ─────────────────────────────────────────────────────────
