@@ -6,11 +6,36 @@
     via predefined or custom bundles. Beautiful CLI interface with professional UX.
 #>
 
-# ─── Flexible Argument Handling ─────────────────────────────────────────
-# We parse $args manually so dash-prefixed flags like -h, --help, -v are
-# not intercepted by PowerShell's parameter binder.
-$Command = if ($args.Count -gt 0) { [string]$args[0] } else { "" }
-$Arguments = if ($args.Count -gt 1) { @($args[1..($args.Count - 1)]) } else { @() }
+# ─── Argument Parsing ────────────────────────────────────────────────────
+# WHY param() AND NOT $args?
+#
+# When PowerShell calls a script via -File, positional tokens land in $args
+# as an [object[]] array. The bug: if only ONE extra argument is present,
+# $args[1..0] (or any reverse range) silently iterates the STRING ITSELF
+# as a char array — so "essential" becomes @('e','s','s','e','n','t','i','a','l')
+# and $Arguments[0] yields 'e'.
+#
+# Using param() with [string] and [string[]] typed parameters tells PowerShell
+# exactly what types to expect. It NEVER splits strings into characters.
+# This is the correct, idiomatic, bulletproof solution.
+#
+# USAGE:
+#   kitly install essential    → $Command="install"  $Arguments=@("essential")
+#   kitly describe Personal    → $Command="describe" $Arguments=@("Personal")
+#   kitly d Personal           → $Command="d"        $Arguments=@("Personal")
+#   kitly create b Git.Git vim → $Command="create"   $Arguments=@("b","Git.Git","vim")
+
+param(
+    [string]   $Command   = "",
+    [string[]] $Arguments = @()
+)
+
+# DEBUG: run  $env:KITLY_DEBUG=1  before kitly to see parsed values
+if ($env:KITLY_DEBUG -eq "1") {
+    Write-Host "  [DEBUG] Command   : '$Command'" -ForegroundColor DarkYellow
+    Write-Host "  [DEBUG] Arguments : '$($Arguments -join "' | '")'" -ForegroundColor DarkYellow
+    Write-Host "" -ForegroundColor DarkYellow
+}
 
 $ErrorActionPreference = "Stop"
 

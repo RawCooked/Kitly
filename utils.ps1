@@ -201,8 +201,15 @@ function Get-KitlyBundle {
         [string]$Name,
         $Config
     )
+
+    # DEBUG: Uncomment the line below to verify the full name is received correctly
+    # Write-Host "  [DEBUG] Get-KitlyBundle received Name='$Name'" -ForegroundColor DarkYellow
+
     if ($Config -and $Config.bundles) {
-        $match = $Config.bundles.PSObject.Properties | Where-Object { $_.Name -eq $Name }
+        # Case-insensitive comparison so "personal", "Personal", "PERSONAL" all resolve
+        $match = $Config.bundles.PSObject.Properties | Where-Object {
+            $_.Name -ieq $Name
+        }
         if ($match) { return $match }
     }
     return $null
