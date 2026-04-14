@@ -49,6 +49,7 @@
                 <a href="#hero" class="nav-link">Home</a>
                 <a href="#features" class="nav-link">Features</a>
                 <a href="#bundles" class="nav-link">Bundles</a>
+                <a href="#builder" class="nav-link">Builder</a>
                 <a href="#about" class="nav-link">About</a>
                 <a href="https://github.com/RawCooked/Kitly" target="_blank" rel="noopener" class="nav-link nav-link-github">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
@@ -373,6 +374,53 @@
                 <div class="custom-bundle-demo">
                     <code>kitly create my-tools VSCode Git.Git Python.Python.3.11</code>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ═══════════════ APP SELECTOR / COMMAND BUILDER ═══════════════ -->
+    <section class="app-builder" id="builder">
+        <div class="section-container">
+            <div class="section-header">
+                <span class="section-tag">Command Builder</span>
+                <h2 class="section-title">Pick your apps,<br><span class="text-gradient">get your command.</span></h2>
+                <p class="section-subtitle">Select the apps you need, then copy the generated Kitly or Winget command.</p>
+            </div>
+
+            <!-- Bundle Quick-Select -->
+            <div class="builder-bundles">
+                <button class="builder-bundle-btn" data-bundle="essential">&#x1f6e1;&#xfe0f; Essential</button>
+                <button class="builder-bundle-btn" data-bundle="dev-frontend">&#x1f3a8; Web Dev</button>
+                <button class="builder-bundle-btn" data-bundle="dev-backend">&#x2699;&#xfe0f; Backend</button>
+                <button class="builder-bundle-btn" data-bundle="gaming">&#x1f3ae; Gaming</button>
+                <button class="builder-bundle-btn" data-bundle="media-creator">&#x1f3ac; Creator</button>
+                <button class="builder-bundle-btn" data-bundle="sysadmin">&#x1f5a5;&#xfe0f; Sysadmin</button>
+                <button class="builder-bundle-btn" data-bundle="office">&#x1f4c4; Office</button>
+                <button class="builder-bundle-btn builder-clear-btn" id="builderClearBtn">Clear All</button>
+            </div>
+
+            <!-- App Grid -->
+            <div class="builder-grid" id="builderGrid"></div>
+
+            <!-- Command Output -->
+            <div class="builder-output" id="builderOutput">
+                <div class="builder-mode-tabs">
+                    <button class="builder-mode-tab active" data-mode="kitly">Kitly Command</button>
+                    <button class="builder-mode-tab" data-mode="winget">Advanced Script</button>
+                </div>
+                <div class="builder-command-box">
+                    <pre class="builder-command-text" id="builderCommandText"><span class="builder-placeholder">Select apps above to generate a command...</span></pre>
+                    <button class="copy-btn builder-copy-btn" id="builderCopyBtn" disabled aria-label="Copy command">
+                        <svg class="copy-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+                            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+                        </svg>
+                        <svg class="check-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
+                    </button>
+                </div>
+                <div class="builder-selected-count" id="builderCount"></div>
             </div>
         </div>
     </section>

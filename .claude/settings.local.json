@@ -8,7 +8,9 @@
       "Bash(powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\admin\\\\Documents\\\\Github\\\\Kitly\\\\core.ps1\" describe essential)",
       "Bash(powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\admin\\\\Documents\\\\Github\\\\Kitly\\\\core.ps1\" fetch)",
       "Bash(powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\admin\\\\Documents\\\\Github\\\\Kitly\\\\core.ps1\" --help)",
-      "Bash(powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\admin\\\\Documents\\\\Github\\\\Kitly\\\\core.ps1\" -v)"
+      "Bash(powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\admin\\\\Documents\\\\Github\\\\Kitly\\\\core.ps1\" -v)",
+      "Bash(powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\admin\\\\Documents\\\\Github\\\\Kitly\\\\core.ps1\" install essential)",
+      "mcp__Claude_Preview__preview_start"
     ]
   }
 }
