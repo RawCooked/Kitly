@@ -1,44 +1,51 @@
-<#
+﻿<#
 .SYNOPSIS
     Kitly Installer — One-command setup for Kitly CLI.
 .DESCRIPTION
     Downloads and installs Kitly to C:\kitly, creates a .cmd wrapper,
     adds it to the user PATH, and verifies the installation.
     
-    Usage:
-        iwr https://kitly.app/install.ps1 | iex
-    OR:
-        curl -L https://kitly.app/install.ps1 | powershell -NoProfile -
+    Usage (PowerShell):
+        iwr https://rawcooked.github.io/Kitly/install.ps1 | iex
+
+    Usage (CMD):
+        curl -L https://rawcooked.github.io/Kitly/install.ps1 | powershell -NoProfile -ExecutionPolicy Bypass -
 #>
 
 $ErrorActionPreference = "Stop"
 
+# Force UTF-8 console output so box-drawing characters render correctly
+try {
+    [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+    $OutputEncoding = [System.Text.Encoding]::UTF8
+} catch {}
+
 # ─── Configuration ──────────────────────────────────────────────────────
-$KitlyVersion   = "1.0.0"
+$KitlyVersion   = "1.2.0"
 $InstallDir     = "C:\kitly"
-$GithubRepo     = "https://rawcooked.github.io/Kitly/"
-$RequiredFiles  = @("kitly.ps1", "utils.ps1", "packages.json")
+$GithubRawBase  = "https://rawcooked.github.io/Kitly"
+$GithubRepo     = "https://github.com/RawCooked/Kitly"
+$RequiredFiles  = @("core.ps1", "utils.ps1", "packages.json")
 
 # ─── UI Helpers ─────────────────────────────────────────────────────────
-function Write-Step   { param([string]$Text) Write-Host "  [*] $Text" -ForegroundColor Cyan }
-function Write-Done   { param([string]$Text) Write-Host "  [v] $Text" -ForegroundColor Green }
-function Write-Fail   { param([string]$Text) Write-Host "  [x] $Text" -ForegroundColor Red }
-function Write-Warn   { param([string]$Text) Write-Host "  [!] $Text" -ForegroundColor Yellow }
+function Write-Step   { param([string]$Text) Write-Host "  → $Text" -ForegroundColor Cyan }
+function Write-Done   { param([string]$Text) Write-Host "  ✓ $Text" -ForegroundColor Green }
+function Write-Fail   { param([string]$Text) Write-Host "  ✗ $Text" -ForegroundColor Red }
+function Write-Warn   { param([string]$Text) Write-Host "  ⚠ $Text" -ForegroundColor Yellow }
 
 # ─── Banner ─────────────────────────────────────────────────────────────
 Write-Host ""
-Write-Host "  ╔══════════════════════════════════════════════╗" -ForegroundColor Magenta
-Write-Host "  ║                                              ║" -ForegroundColor Magenta
-Write-Host "  ║          KITLY INSTALLER v$KitlyVersion            ║" -ForegroundColor Magenta
-Write-Host "  ║     One command. Every tool you need.        ║" -ForegroundColor Magenta
-Write-Host "  ║                                              ║" -ForegroundColor Magenta
-Write-Host "  ╚══════════════════════════════════════════════╝" -ForegroundColor Magenta
+Write-Host "  ┌──────────────────────────────────────────────────┐" -ForegroundColor Magenta
+Write-Host "  │                                                  │" -ForegroundColor Magenta
+Write-Host "  │         KITLY INSTALLER v$KitlyVersion                 │" -ForegroundColor Magenta
+Write-Host "  │     One command. Every tool you need.            │" -ForegroundColor Magenta
+Write-Host "  │                                                  │" -ForegroundColor Magenta
+Write-Host "  └──────────────────────────────────────────────────┘" -ForegroundColor Magenta
 Write-Host ""
 
 # ─── Step 1: Check prerequisites ────────────────────────────────────────
 Write-Step "Checking prerequisites..."
 
-# Check if winget is available
 try {
     $wingetVersion = winget --version 2>$null
     if ($wingetVersion) {
@@ -55,7 +62,7 @@ try {
 # ─── Step 2: Check for existing installation ────────────────────────────
 Write-Step "Checking for existing Kitly installation..."
 
-if (Test-Path (Join-Path $InstallDir "kitly.ps1")) {
+if (Test-Path (Join-Path $InstallDir "core.ps1")) {
     Write-Warn "Kitly is already installed at $InstallDir"
     Write-Host ""
     $response = Read-Host "         Reinstall? (y/N)"
@@ -90,7 +97,7 @@ Write-Step "Downloading Kitly files from GitHub..."
 $downloadFailed = $false
 
 foreach ($file in $RequiredFiles) {
-    $url = "$GithubRepo/$file"
+    $url = "$GithubRawBase/$file"
     $dest = Join-Path $InstallDir $file
     
     Write-Host "       Downloading $file..." -ForegroundColor DarkGray
@@ -98,6 +105,10 @@ foreach ($file in $RequiredFiles) {
     try {
         [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
         Invoke-WebRequest -Uri $url -OutFile $dest -UseBasicParsing -ErrorAction Stop
+        
+        # Unblock the downloaded file so it can execute without issues
+        Unblock-File -Path $dest -ErrorAction SilentlyContinue
+        
         Write-Done "  $file downloaded."
     } catch {
         Write-Fail "  Failed to download: $file"
@@ -110,7 +121,7 @@ foreach ($file in $RequiredFiles) {
 if ($downloadFailed) {
     Write-Host ""
     Write-Fail "Some files failed to download. Check your internet connection and the repository URL."
-    Write-Host "         Repo: $GithubRepo" -ForegroundColor DarkGray
+    Write-Host "         Repo: $GithubRawBase" -ForegroundColor DarkGray
     exit 1
 }
 
@@ -120,11 +131,12 @@ Write-Step "Creating kitly.cmd wrapper..."
 $cmdWrapperPath = Join-Path $InstallDir "kitly.cmd"
 $cmdContent = @"
 @echo off
-powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0kitly.ps1" %*
+powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0core.ps1" %*
 "@
 
 try {
     Set-Content -Path $cmdWrapperPath -Value $cmdContent -Encoding ASCII
+    Unblock-File -Path $cmdWrapperPath -ErrorAction SilentlyContinue
     Write-Done "kitly.cmd created at: $cmdWrapperPath"
 } catch {
     Write-Fail "Failed to create kitly.cmd wrapper."
@@ -168,12 +180,12 @@ try {
 Write-Step "Verifying installation..."
 
 $allGood = $true
-foreach ($file in @("kitly.ps1", "utils.ps1", "packages.json", "kitly.cmd")) {
+foreach ($file in @("core.ps1", "utils.ps1", "packages.json", "kitly.cmd")) {
     $filePath = Join-Path $InstallDir $file
     if (Test-Path $filePath) {
-        Write-Host "       [v] $file" -ForegroundColor Green
+        Write-Host "       ✓ $file" -ForegroundColor Green
     } else {
-        Write-Host "       [x] $file — MISSING" -ForegroundColor Red
+        Write-Host "       ✗ $file — MISSING" -ForegroundColor Red
         $allGood = $false
     }
 }
@@ -182,27 +194,29 @@ foreach ($file in @("kitly.ps1", "utils.ps1", "packages.json", "kitly.cmd")) {
 Write-Host ""
 
 if ($allGood) {
-    Write-Host "  ╔══════════════════════════════════════════════╗" -ForegroundColor Green
-    Write-Host "  ║                                              ║" -ForegroundColor Green
-    Write-Host "  ║   Kitly installed successfully!              ║" -ForegroundColor Green
-    Write-Host "  ║                                              ║" -ForegroundColor Green
-    Write-Host "  ║   Restart your terminal, then run:           ║" -ForegroundColor Green
-    Write-Host "  ║                                              ║" -ForegroundColor Green
-    Write-Host "  ║     kitly list                               ║" -ForegroundColor Green
-    Write-Host "  ║     kitly install <bundle>                   ║" -ForegroundColor Green
-    Write-Host "  ║                                              ║" -ForegroundColor Green
-    Write-Host "  ╚══════════════════════════════════════════════╝" -ForegroundColor Green
+    Write-Host "  ┌──────────────────────────────────────────────────┐" -ForegroundColor Green
+    Write-Host "  │                                                  │" -ForegroundColor Green
+    Write-Host "  │   Kitly installed successfully! 🎉               │" -ForegroundColor Green
+    Write-Host "  │                                                  │" -ForegroundColor Green
+    Write-Host "  │   Restart your terminal, then run:               │" -ForegroundColor Green
+    Write-Host "  │                                                  │" -ForegroundColor Green
+    Write-Host "  │     kitly              Show dashboard            │" -ForegroundColor Green
+    Write-Host "  │     kitly help         Show all commands         │" -ForegroundColor Green
+    Write-Host "  │     kitly list         Browse bundles            │" -ForegroundColor Green
+    Write-Host "  │     kitly install <b>  Install a bundle          │" -ForegroundColor Green
+    Write-Host "  │                                                  │" -ForegroundColor Green
+    Write-Host "  └──────────────────────────────────────────────────┘" -ForegroundColor Green
 } else {
-    Write-Host "  ╔══════════════════════════════════════════════╗" -ForegroundColor Yellow
-    Write-Host "  ║                                              ║" -ForegroundColor Yellow
-    Write-Host "  ║   Installation completed with warnings.      ║" -ForegroundColor Yellow
-    Write-Host "  ║   Some files may be missing.                 ║" -ForegroundColor Yellow
-    Write-Host "  ║   Check $InstallDir for details.      ║" -ForegroundColor Yellow
-    Write-Host "  ║                                              ║" -ForegroundColor Yellow
-    Write-Host "  ╚══════════════════════════════════════════════╝" -ForegroundColor Yellow
+    Write-Host "  ┌──────────────────────────────────────────────────┐" -ForegroundColor Yellow
+    Write-Host "  │                                                  │" -ForegroundColor Yellow
+    Write-Host "  │   Installation completed with warnings.          │" -ForegroundColor Yellow
+    Write-Host "  │   Some files may be missing.                     │" -ForegroundColor Yellow
+    Write-Host "  │   Check $InstallDir for details.          │" -ForegroundColor Yellow
+    Write-Host "  │                                                  │" -ForegroundColor Yellow
+    Write-Host "  └──────────────────────────────────────────────────┘" -ForegroundColor Yellow
 }
 
 Write-Host ""
 Write-Host "  Installed to: $InstallDir" -ForegroundColor DarkGray
-Write-Host "  Documentation: https://github.com/YOUR_USERNAME/kitly" -ForegroundColor DarkGray
+Write-Host "  GitHub: $GithubRepo" -ForegroundColor DarkGray
 Write-Host ""

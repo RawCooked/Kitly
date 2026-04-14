@@ -2,6 +2,8 @@
    KITLY — Website JavaScript
    Handles: navigation, copy-to-clipboard, terminal animation,
    scroll animations, and tab switching.
+   Optimized for performance: requestAnimationFrame, passive listeners,
+   IntersectionObserver, no layout thrashing.
    ═══════════════════════════════════════════════════════════════════════ */
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -14,22 +16,32 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 /* ═══════════════════════════════════════════════════════════════════════
-   NAVBAR — Scroll-triggered background
+   NAVBAR — Scroll-triggered background (optimized with rAF)
    ═══════════════════════════════════════════════════════════════════════ */
 function initNavbar() {
     const navbar = document.getElementById('navbar');
     if (!navbar) return;
 
-    const onScroll = () => {
-        if (window.scrollY > 60) {
-            navbar.classList.add('scrolled');
-        } else {
-            navbar.classList.remove('scrolled');
+    let ticking = false;
+    let lastScrolled = false;
+
+    const update = () => {
+        const scrolled = window.scrollY > 60;
+        if (scrolled !== lastScrolled) {
+            navbar.classList.toggle('scrolled', scrolled);
+            lastScrolled = scrolled;
         }
+        ticking = false;
     };
 
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
+    window.addEventListener('scroll', () => {
+        if (!ticking) {
+            requestAnimationFrame(update);
+            ticking = true;
+        }
+    }, { passive: true });
+
+    update();
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
@@ -41,9 +53,9 @@ function initMobileNav() {
     if (!toggle || !links) return;
 
     toggle.addEventListener('click', () => {
-        toggle.classList.toggle('active');
-        links.classList.toggle('open');
-        document.body.style.overflow = links.classList.contains('open') ? 'hidden' : '';
+        const isOpen = links.classList.toggle('open');
+        toggle.classList.toggle('active', isOpen);
+        document.body.style.overflow = isOpen ? 'hidden' : '';
     });
 
     // Close menu when a link is clicked
@@ -61,16 +73,16 @@ function initMobileNav() {
    ═══════════════════════════════════════════════════════════════════════ */
 function initInstallTabs() {
     const tabs = document.querySelectorAll('.install-tab');
+    const panels = document.querySelectorAll('.install-panel');
     
     tabs.forEach(tab => {
         tab.addEventListener('click', () => {
             const target = tab.dataset.tab;
             
-            // Deactivate all tabs and panels
-            document.querySelectorAll('.install-tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.install-panel').forEach(p => p.classList.remove('active'));
+            // Single pass: deactivate all, then activate selected
+            tabs.forEach(t => t.classList.remove('active'));
+            panels.forEach(p => p.classList.remove('active'));
             
-            // Activate selected
             tab.classList.add('active');
             const panel = document.getElementById(`panel${capitalize(target)}`);
             if (panel) panel.classList.add('active');
@@ -92,42 +104,47 @@ function copyCommand(elementId) {
     const text = el.textContent.trim();
 
     navigator.clipboard.writeText(text).then(() => {
-        // Find the parent install-command and its copy button
-        const command = el.closest('.install-command');
-        const btn = command ? command.querySelector('.copy-btn') : null;
-        
-        if (btn) {
-            const copyIcon = btn.querySelector('.copy-icon');
-            const checkIcon = btn.querySelector('.check-icon');
-            
-            btn.classList.add('copied');
-            if (copyIcon) copyIcon.style.display = 'none';
-            if (checkIcon) checkIcon.style.display = 'block';
-
-            setTimeout(() => {
-                btn.classList.remove('copied');
-                if (copyIcon) copyIcon.style.display = 'block';
-                if (checkIcon) checkIcon.style.display = 'none';
-            }, 2000);
-        }
+        showCopyFeedback(el);
     }).catch(() => {
-        // Fallback for older browsers
+        // Fallback for older browsers / insecure contexts
         const textarea = document.createElement('textarea');
         textarea.value = text;
-        textarea.style.position = 'fixed';
-        textarea.style.opacity = '0';
+        textarea.style.cssText = 'position:fixed;opacity:0;pointer-events:none';
         document.body.appendChild(textarea);
         textarea.select();
-        try { document.execCommand('copy'); } catch(e) { /* silent fail */ }
+        try { 
+            document.execCommand('copy');
+            showCopyFeedback(el);
+        } catch(e) { /* silent */ }
         document.body.removeChild(textarea);
     });
+}
+
+function showCopyFeedback(el) {
+    const command = el.closest('.install-command');
+    const btn = command ? command.querySelector('.copy-btn') : null;
+    if (!btn) return;
+
+    const copyIcon = btn.querySelector('.copy-icon');
+    const checkIcon = btn.querySelector('.check-icon');
+    
+    btn.classList.add('copied');
+    if (copyIcon) copyIcon.style.display = 'none';
+    if (checkIcon) checkIcon.style.display = 'block';
+
+    setTimeout(() => {
+        btn.classList.remove('copied');
+        if (copyIcon) copyIcon.style.display = '';
+        if (checkIcon) checkIcon.style.display = 'none';
+    }, 2000);
 }
 
 // Expose globally for onclick handlers
 window.copyCommand = copyCommand;
 
 /* ═══════════════════════════════════════════════════════════════════════
-   TERMINAL ANIMATION — Typing effect with simulated output
+   TERMINAL ANIMATION — Typing effect (optimized, no layout thrashing)
+   Uses requestAnimationFrame-friendly timing
    ═══════════════════════════════════════════════════════════════════════ */
 function initTerminalAnimation() {
     const cmdEl = document.getElementById('typingCmd');
@@ -138,29 +155,29 @@ function initTerminalAnimation() {
     const command = 'kitly install dev-frontend';
     const outputLines = [
         { text: '', cls: '' },
-        { text: ' [*] KITLY | Installing: dev-frontend', cls: 't-info' },
-        { text: ' [i] Found bundle \'dev-frontend\' with 7 packages.', cls: 't-muted' },
+        { text: ' ┌─────────────────────────────────────────┐', cls: 't-muted' },
+        { text: ' │  KITLY │ Installing: dev-frontend        │', cls: 't-info' },
+        { text: ' └─────────────────────────────────────────┘', cls: 't-muted' },
         { text: '', cls: '' },
-        { text: ' [i] Attempting to install: Microsoft.VisualStudioCode', cls: 't-muted' },
-        { text: ' [v] Installed \'Microsoft.VisualStudioCode\' successfully!', cls: 't-success' },
-        { text: ' [i] Attempting to install: OpenJS.NodeJS', cls: 't-muted' },
-        { text: ' [v] Installed \'OpenJS.NodeJS\' successfully!', cls: 't-success' },
-        { text: ' [i] Attempting to install: Git.Git', cls: 't-muted' },
-        { text: ' [v] \'Git.Git\' is already installed or up-to-date!', cls: 't-success' },
-        { text: ' [i] Attempting to install: Google.Chrome', cls: 't-muted' },
-        { text: ' [v] \'Google.Chrome\' is already installed or up-to-date!', cls: 't-success' },
+        { text: ' → Installing: Microsoft.VisualStudioCode', cls: 't-muted' },
+        { text: ' ✓ Installed \'VS Code\' successfully!', cls: 't-success' },
+        { text: ' → Installing: OpenJS.NodeJS', cls: 't-muted' },
+        { text: ' ✓ Installed \'Node.js\' successfully!', cls: 't-success' },
+        { text: ' → Installing: Git.Git', cls: 't-muted' },
+        { text: ' ✓ \'Git\' is already up-to-date!', cls: 't-success' },
         { text: '', cls: '' },
-        { text: ' [*] KITLY | Installation Completed!', cls: 't-info' },
+        { text: ' ┌─────────────────────────────────────────┐', cls: 't-muted' },
+        { text: ' │  KITLY │ Installation Completed!         │', cls: 't-info' },
+        { text: ' └─────────────────────────────────────────┘', cls: 't-muted' },
     ];
 
     let charIndex = 0;
-    let hasStarted = false;
+    let animationTimer = null;
 
     // Use IntersectionObserver to start when visible
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
-            if (entry.isIntersecting && !hasStarted) {
-                hasStarted = true;
+            if (entry.isIntersecting) {
                 startTyping();
                 observer.unobserve(entry.target);
             }
@@ -170,38 +187,32 @@ function initTerminalAnimation() {
     observer.observe(document.querySelector('.hero-terminal'));
 
     function startTyping() {
-        typeChar();
+        charIndex = 0;
+        cmdEl.textContent = '';
+        outputEl.innerHTML = '';
+        if (cursorEl) cursorEl.style.display = 'inline-block';
+        typeNextChar();
     }
 
-    function typeChar() {
+    function typeNextChar() {
         if (charIndex < command.length) {
             cmdEl.textContent += command[charIndex];
             charIndex++;
-            setTimeout(typeChar, 40 + Math.random() * 40);
+            animationTimer = setTimeout(typeNextChar, 35 + Math.random() * 35);
         } else {
-            // Hide cursor briefly, then show output
             if (cursorEl) cursorEl.style.display = 'none';
-            setTimeout(showOutput, 400);
+            animationTimer = setTimeout(showOutputLines, 350);
         }
     }
 
-    function showOutput() {
+    function showOutputLines() {
         let lineIndex = 0;
 
-        function addLine() {
+        function addNextLine() {
             if (lineIndex >= outputLines.length) {
-                if (cursorEl) {
-                    cursorEl.style.display = 'inline-block';
-                }
-                // Restart animation after a pause
-                setTimeout(() => {
-                    cmdEl.textContent = '';
-                    outputEl.innerHTML = '';
-                    charIndex = 0;
-                    hasStarted = true;
-                    if (cursorEl) cursorEl.style.display = 'inline-block';
-                    startTyping();
-                }, 5000);
+                if (cursorEl) cursorEl.style.display = 'inline-block';
+                // Restart after a pause
+                animationTimer = setTimeout(startTyping, 5000);
                 return;
             }
 
@@ -209,19 +220,19 @@ function initTerminalAnimation() {
             const div = document.createElement('div');
             div.className = `t-line ${line.cls}`;
             div.textContent = line.text || '\u00A0';
-            div.style.animationDelay = '0s';
             outputEl.appendChild(div);
             lineIndex++;
 
-            setTimeout(addLine, 120);
+            animationTimer = setTimeout(addNextLine, 100);
         }
 
-        addLine();
+        addNextLine();
     }
 }
 
 /* ═══════════════════════════════════════════════════════════════════════
-   SCROLL ANIMATIONS — Reveal on scroll with IntersectionObserver
+   SCROLL ANIMATIONS — Reveal on scroll (optimized, batched reads)
+   Uses CSS classes for transforms instead of inline styles
    ═══════════════════════════════════════════════════════════════════════ */
 function initScrollAnimations() {
     const animatedElements = document.querySelectorAll(
@@ -230,27 +241,40 @@ function initScrollAnimations() {
 
     if (!animatedElements.length) return;
 
+    // Pre-compute sibling indices to avoid layout reads during animation
+    const elementData = new Map();
+    animatedElements.forEach(el => {
+        const parent = el.parentElement;
+        const className = el.classList[0];
+        const siblings = Array.from(parent.children).filter(c => c.classList.contains(className));
+        elementData.set(el, siblings.indexOf(el));
+    });
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                // Stagger delay based on element index within its container
-                const parent = entry.target.parentElement;
-                const siblings = Array.from(parent.children).filter(
-                    c => c.classList.contains(entry.target.classList[0])
-                );
-                const index = siblings.indexOf(entry.target);
-                const delay = index * 100;
+                const index = elementData.get(entry.target) || 0;
+                const delay = index * 80;
 
-                setTimeout(() => {
-                    entry.target.classList.add('visible');
-                }, delay);
+                // Use requestAnimationFrame for smooth class addition
+                if (delay > 0) {
+                    setTimeout(() => {
+                        requestAnimationFrame(() => {
+                            entry.target.classList.add('visible');
+                        });
+                    }, delay);
+                } else {
+                    requestAnimationFrame(() => {
+                        entry.target.classList.add('visible');
+                    });
+                }
 
                 observer.unobserve(entry.target);
             }
         });
     }, {
-        threshold: 0.15,
-        rootMargin: '0px 0px -50px 0px'
+        threshold: 0.1,
+        rootMargin: '0px 0px -40px 0px'
     });
 
     animatedElements.forEach(el => observer.observe(el));
@@ -262,7 +286,10 @@ function initScrollAnimations() {
 function initSmoothScrollLinks() {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
-            const target = document.querySelector(this.getAttribute('href'));
+            const href = this.getAttribute('href');
+            if (href === '#') return;
+            
+            const target = document.querySelector(href);
             if (!target) return;
 
             e.preventDefault();

@@ -260,7 +260,9 @@ img {
     border-radius: 50%;
     filter: blur(100px);
     opacity: 0.5;
+    will-change: transform;
     animation: orbFloat 20s ease-in-out infinite;
+    contain: layout style;
 }
 
 .orb-1 {
@@ -576,6 +578,8 @@ img {
         0 20px 60px rgba(0, 0, 0, 0.4),
         var(--glow-primary);
     animation: fadeInUp 0.8s var(--ease-out) 1s both, terminalFloat 6s ease-in-out infinite 2s;
+    will-change: transform;
+    contain: layout;
 }
 
 @keyframes terminalFloat {
@@ -761,10 +765,12 @@ img {
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 20px;
-    transition: all 0.4s var(--ease-out);
+    transition: transform 0.4s var(--ease-out), background 0.4s var(--ease-out), border-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out), opacity 0.5s var(--ease-out);
     overflow: hidden;
     opacity: 0;
     transform: translateY(30px);
+    will-change: transform, opacity;
+    contain: content;
 }
 
 .feature-card.visible {
@@ -858,11 +864,13 @@ img {
     background: var(--bg-card);
     border: 1px solid var(--border);
     border-radius: 20px;
-    transition: all 0.4s var(--ease-out);
+    transition: transform 0.4s var(--ease-out), background 0.4s var(--ease-out), border-color 0.4s var(--ease-out), box-shadow 0.4s var(--ease-out), opacity 0.5s var(--ease-out);
     display: flex;
     flex-direction: column;
     opacity: 0;
     transform: translateY(30px);
+    will-change: transform, opacity;
+    contain: content;
 }
 
 .bundle-card.visible {
@@ -982,9 +990,11 @@ img {
     border: 1px solid var(--border);
     border-radius: 20px;
     text-align: center;
-    transition: all 0.4s var(--ease-out);
+    transition: transform 0.4s var(--ease-out), border-color 0.4s var(--ease-out), opacity 0.5s var(--ease-out);
     opacity: 0;
     transform: translateY(30px);
+    will-change: transform, opacity;
+    contain: content;
 }
 
 .step-card.visible {
@@ -1458,4 +1468,34 @@ img {
         padding: 6px 14px;
         font-size: 0.8rem;
     }
+
+    /* Lighter orbs on small screens to prevent stutter on low-end devices */
+    .gradient-orb {
+        filter: blur(60px);
+        opacity: 0.4;
+    }
+    .orb-1 { width: 360px; height: 360px; }
+    .orb-2 { width: 320px; height: 320px; }
+    .orb-3 { width: 260px; height: 260px; }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════
+   REDUCED MOTION — Respect user accessibility preferences
+   ═══════════════════════════════════════════════════════════════════════ */
+@media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+
+    .gradient-orb,
+    .hero-terminal,
+    .scroll-indicator {
+        animation: none !important;
+    }
+}
+
