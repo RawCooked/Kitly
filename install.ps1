@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Kitly Installer — One-command setup for Kitly CLI.
 .DESCRIPTION
