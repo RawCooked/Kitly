@@ -320,21 +320,24 @@ const APP_CATALOG = [
     { id: 'Microsoft.VisualStudio.2022.Community', name: 'Visual Studio 2022', cat: 'dev' },
     { id: 'Microsoft.DotNet.SDK.8',     name: '.NET SDK 8', cat: 'dev' },
     { id: 'Amazon.AWSCLI',              name: 'AWS CLI', cat: 'dev' },
-    { id: 'dbeaver.dbeaver',            name: 'DBeaver', cat: 'dev' },
+    { id: 'DBeaver.DBeaver.Community',  name: 'DBeaver', cat: 'dev' },
     { id: 'Microsoft.SQLServerManagementStudio', name: 'SSMS', cat: 'dev' },
     { id: 'RProject.R',                 name: 'R Language', cat: 'dev' },
+
+    { id: 'CoreyButler.NVMforWindows',  name: 'NVM for Windows', cat: 'dev' },
 
     { id: 'Google.Chrome',              name: 'Chrome', cat: 'browser' },
     { id: 'Mozilla.Firefox',            name: 'Firefox', cat: 'browser' },
     { id: 'Brave.Brave',                name: 'Brave', cat: 'browser' },
+    { id: 'ImputNet.Helium',            name: 'Helium', cat: 'browser' },
 
     { id: '7zip.7zip',                  name: '7-Zip', cat: 'util' },
     { id: 'Notepad++.Notepad++',        name: 'Notepad++', cat: 'util' },
     { id: 'voidtools.Everything',        name: 'Everything', cat: 'util' },
     { id: 'Microsoft.PowerToys',        name: 'PowerToys', cat: 'util' },
-    { id: 'TimKosse.FileZillaClient',   name: 'FileZilla', cat: 'util' },
-    { id: 'AnyDeskSoftwareGmbH.AnyDesk',name: 'AnyDesk', cat: 'util' },
+    { id: 'AnyDesk.AnyDesk',            name: 'AnyDesk', cat: 'util' },
     { id: 'LocalSend.LocalSend',        name: 'LocalSend', cat: 'util' },
+    { id: 'AntibodySoftware.WizTree',   name: 'WizTree', cat: 'util' },
 
     { id: 'VideoLAN.VLC',               name: 'VLC', cat: 'media' },
     { id: 'OBSProject.OBSStudio',       name: 'OBS Studio', cat: 'media' },
@@ -343,15 +346,16 @@ const APP_CATALOG = [
     { id: 'GIMP.GIMP',                  name: 'GIMP', cat: 'media' },
     { id: 'KDE.Krita',                  name: 'Krita', cat: 'media' },
     { id: 'KDE.Kdenlive',               name: 'Kdenlive', cat: 'media' },
-    { id: 'BlackmagicDesign.DaVinciResolve', name: 'DaVinci Resolve', cat: 'media' },
+    { id: 'FreeCAD.FreeCAD',            name: 'FreeCAD', cat: 'media' },
 
     { id: 'Discord.Discord',            name: 'Discord', cat: 'comm' },
     { id: 'SlackTechnologies.Slack',     name: 'Slack', cat: 'comm' },
     { id: 'Zoom.Zoom',                  name: 'Zoom', cat: 'comm' },
+    { id: '9NKSQGP7F2NH',               name: 'WhatsApp', cat: 'comm' },
 
     { id: 'Valve.Steam',                name: 'Steam', cat: 'gaming' },
     { id: 'EpicGames.EpicGamesLauncher',name: 'Epic Games', cat: 'gaming' },
-    { id: 'Nvidia.GeForceExperience',   name: 'GeForce Exp.', cat: 'gaming' },
+    { id: 'XP8CLZL93F5Z4P',             name: 'NVIDIA App', cat: 'gaming' },
     { id: 'GOG.Galaxy',                 name: 'GOG Galaxy', cat: 'gaming' },
 
     { id: 'TheDocumentFoundation.LibreOffice', name: 'LibreOffice', cat: 'office' },
@@ -360,10 +364,10 @@ const APP_CATALOG = [
     { id: 'AppFlowy.AppFlowy',           name: 'AppFlowy', cat: 'office' },
 
     { id: 'PuTTY.PuTTY',               name: 'PuTTY', cat: 'admin' },
-    { id: 'MartinPrikryl.WinSCP',       name: 'WinSCP', cat: 'admin' },
+    { id: 'WinSCP.WinSCP',               name: 'WinSCP', cat: 'admin' },
     { id: 'WireGuard.WireGuard',        name: 'WireGuard', cat: 'admin' },
     { id: 'WiresharkFoundation.Wireshark', name: 'Wireshark', cat: 'admin' },
-    { id: 'Microsoft.Sysinternals',     name: 'Sysinternals', cat: 'admin' },
+    { id: 'Microsoft.Sysinternals.Suite', name: 'Sysinternals', cat: 'admin' },
 
     { id: 'qBittorrent.qBittorrent',    name: 'qBittorrent', cat: 'util' },
 ];
@@ -371,10 +375,10 @@ const APP_CATALOG = [
 const BUNDLES = {
     'essential':     ['7zip.7zip','Google.Chrome','VideoLAN.VLC','Notepad++.Notepad++','voidtools.Everything','Microsoft.PowerToys'],
     'dev-frontend':  ['Microsoft.VisualStudioCode','OpenJS.NodeJS','Git.Git','Google.Chrome','Mozilla.Firefox','Figma.Figma','Postman.Postman'],
-    'dev-backend':   ['Docker.DockerDesktop','Python.Python.3.11','Git.Git','Postman.Postman','dbeaver.dbeaver','Amazon.AWSCLI'],
-    'gaming':        ['Valve.Steam','Discord.Discord','EpicGames.EpicGamesLauncher','Nvidia.GeForceExperience','GOG.Galaxy'],
-    'media-creator': ['OBSProject.OBSStudio','BlackmagicDesign.DaVinciResolve','BlenderFoundation.Blender','Audacity.Audacity','GIMP.GIMP','KDE.Krita'],
-    'sysadmin':      ['PuTTY.PuTTY','MartinPrikryl.WinSCP','Notepad++.Notepad++','WireGuard.WireGuard','Microsoft.Sysinternals','WiresharkFoundation.Wireshark'],
+    'dev-backend':   ['Docker.DockerDesktop','Python.Python.3.11','Git.Git','Postman.Postman','DBeaver.DBeaver.Community','Amazon.AWSCLI'],
+    'gaming':        ['Valve.Steam','Discord.Discord','EpicGames.EpicGamesLauncher','XP8CLZL93F5Z4P','GOG.Galaxy'],
+    'media-creator': ['OBSProject.OBSStudio','BlenderFoundation.Blender','Audacity.Audacity','GIMP.GIMP','KDE.Krita'],
+    'sysadmin':      ['PuTTY.PuTTY','WinSCP.WinSCP','Notepad++.Notepad++','WireGuard.WireGuard','Microsoft.Sysinternals.Suite','WiresharkFoundation.Wireshark'],
     'office':        ['TheDocumentFoundation.LibreOffice','SumatraPDF.SumatraPDF','Zoom.Zoom','SlackTechnologies.Slack','7zip.7zip'],
 };
 

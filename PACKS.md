@@ -1,8 +1,8 @@
-﻿# [*] Kitly Packages
+﻿# 📦 Kitly Packages
 
-Welcome to the Kitly package bundle registry. Below you'll find the predefined bundles that can be installed with a single command: kitly install bundle_name.
+Welcome to the Kitly package bundle registry. Below you'll find the predefined bundles that can be installed with a single command: `kitly install bundle_name`.
 
-## [*] starter
+## 📋 Personal
 
 *Complete starter environment with development, media, productivity, and communication tools.*
 
@@ -10,28 +10,31 @@ Welcome to the Kitly package bundle registry. Below you'll find the predefined b
 
 - `RProject.R`
 - `Brave.Brave`
-- `AntiGravity`
+- `Google.Antigravity`
 - `Microsoft.VisualStudioCode`
 - `OpenJS.NodeJS`
 - `Python.Python.3.11`
 - `Git.Git`
 - `qBittorrent.qBittorrent`
-- `TimKosse.FileZillaClient`
 - `Discord.Discord`
 - `LocalSend.LocalSend`
-- `Blanket`
 - `AppFlowy.AppFlowy`
 - `ONLYOFFICE.DesktopEditors`
 - `Audacity.Audacity`
 - `OBSProject.OBSStudio`
 - `VideoLAN.VLC`
 - `KDE.Kdenlive`
-- `KeyKdenlive`
-- `AnyDeskSoftwareGmbH.AnyDesk`
+- `AnyDesk.AnyDesk`
+- `Postman.Postman`
+- `AntibodySoftware.WizTree`
+- `ImputNet.Helium`
+- `CoreyButler.NVMforWindows`
+- `9NKSQGP7F2NH`
+- `FreeCAD.FreeCAD`
 
 ---
 
-## [*] essential
+## 📋 essential
 
 *The bare minimum every clean Windows installation needs.*
 
@@ -46,7 +49,7 @@ Welcome to the Kitly package bundle registry. Below you'll find the predefined b
 
 ---
 
-## [*] dev-frontend
+## 📋 dev-frontend
 
 *Essential tools for Frontend Web Development.*
 
@@ -62,7 +65,7 @@ Welcome to the Kitly package bundle registry. Below you'll find the predefined b
 
 ---
 
-## [*] dev-backend
+## 📋 dev-backend
 
 *Essential tools for Backend Development and APIs.*
 
@@ -72,12 +75,12 @@ Welcome to the Kitly package bundle registry. Below you'll find the predefined b
 - `Python.Python.3.11`
 - `Git.Git`
 - `Postman.Postman`
-- `dbeaver.dbeaver`
+- `DBeaver.DBeaver.Community`
 - `Amazon.AWSCLI`
 
 ---
 
-## [*] dev-csharp
+## 📋 dev-csharp
 
 *Standard .NET & C# development environment.*
 
@@ -91,7 +94,7 @@ Welcome to the Kitly package bundle registry. Below you'll find the predefined b
 
 ---
 
-## [*] gaming
+## 📋 gaming
 
 *Standard launchers and gaming communication tools.*
 
@@ -100,12 +103,12 @@ Welcome to the Kitly package bundle registry. Below you'll find the predefined b
 - `Valve.Steam`
 - `Discord.Discord`
 - `EpicGames.EpicGamesLauncher`
-- `Nvidia.GeForceExperience`
+- `XP8CLZL93F5Z4P`
 - `GOG.Galaxy`
 
 ---
 
-## [*] office
+## 📋 office
 
 *Office productivity, communication, and document tools.*
 
@@ -119,14 +122,13 @@ Welcome to the Kitly package bundle registry. Below you'll find the predefined b
 
 ---
 
-## [*] media-creator
+## 📋 media-creator
 
 *Creative tools for video, audio, and image editing.*
 
 **Included Apps:**
 
 - `OBSProject.OBSStudio`
-- `BlackmagicDesign.DaVinciResolve`
 - `BlenderFoundation.Blender`
 - `Audacity.Audacity`
 - `GIMP.GIMP`
@@ -134,17 +136,17 @@ Welcome to the Kitly package bundle registry. Below you'll find the predefined b
 
 ---
 
-## [*] sysadmin
+## 📋 sysadmin
 
 *Network, server, and system administration tools.*
 
 **Included Apps:**
 
 - `PuTTY.PuTTY`
-- `MartinPrikryl.WinSCP`
+- `WinSCP.WinSCP`
 - `Notepad++.Notepad++`
 - `WireGuard.WireGuard`
-- `Microsoft.Sysinternals`
+- `Microsoft.Sysinternals.Suite`
 - `WiresharkFoundation.Wireshark`
 
 ---

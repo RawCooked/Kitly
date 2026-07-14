@@ -117,9 +117,9 @@ kitly update dev-backend
 | `dev-frontend` | Frontend web development | VS Code, Node.js, Git, Chrome, Firefox, Figma, Postman |
 | `dev-backend` | Backend & API development | Docker, Python, Git, Postman, DBeaver, AWS CLI |
 | `dev-csharp` | .NET & C# development | Visual Studio, .NET SDK, SSMS, Git, Postman |
-| `gaming` | Game launchers & comms | Steam, Discord, Epic Games, GeForce, GOG Galaxy |
+| `gaming` | Game launchers & comms | Steam, Discord, Epic Games, NVIDIA App, GOG Galaxy |
 | `office` | Office & productivity | LibreOffice, SumatraPDF, Zoom, Slack, 7-Zip |
-| `media-creator` | Creative tools | OBS, DaVinci Resolve, Blender, Audacity, GIMP, Krita |
+| `media-creator` | Creative tools | OBS, Blender, Audacity, GIMP, Krita |
 | `sysadmin` | System administration | PuTTY, WinSCP, WireGuard, Wireshark, Sysinternals |
 
 See [`PACKS.md`](PACKS.md) for the full list with winget IDs.

@@ -5,25 +5,27 @@
       "packages": [
         "RProject.R",
         "Brave.Brave",
-        "AntiGravity",
+        "Google.Antigravity",
         "Microsoft.VisualStudioCode",
         "OpenJS.NodeJS",
         "Python.Python.3.11",
         "Git.Git",
         "qBittorrent.qBittorrent",
-        "TimKosse.FileZillaClient",
         "Discord.Discord",
         "LocalSend.LocalSend",
-        "Blanket",
         "AppFlowy.AppFlowy",
         "ONLYOFFICE.DesktopEditors",
         "Audacity.Audacity",
         "OBSProject.OBSStudio",
         "VideoLAN.VLC",
         "KDE.Kdenlive",
-        "KeyKdenlive",
-        "AnyDeskSoftwareGmbH.AnyDesk",
-        "Postman.Postman"
+        "AnyDesk.AnyDesk",
+        "Postman.Postman",
+        "AntibodySoftware.WizTree",
+        "ImputNet.Helium",
+        "CoreyButler.NVMforWindows",
+        "9NKSQGP7F2NH",
+        "FreeCAD.FreeCAD"
       ]
     },
     "essential": {
@@ -56,7 +58,7 @@
         "Python.Python.3.11",
         "Git.Git",
         "Postman.Postman",
-        "dbeaver.dbeaver",
+        "DBeaver.DBeaver.Community",
         "Amazon.AWSCLI"
       ]
     },
@@ -76,7 +78,7 @@
         "Valve.Steam",
         "Discord.Discord",
         "EpicGames.EpicGamesLauncher",
-        "Nvidia.GeForceExperience",
+        "XP8CLZL93F5Z4P",
         "GOG.Galaxy"
       ]
     },
@@ -94,7 +96,6 @@
       "description": "Creative tools for video, audio, and image editing.",
       "packages": [
         "OBSProject.OBSStudio",
-        "BlackmagicDesign.DaVinciResolve",
         "BlenderFoundation.Blender",
         "Audacity.Audacity",
         "GIMP.GIMP",
@@ -105,10 +106,10 @@
       "description": "Network, server, and system administration tools.",
       "packages": [
         "PuTTY.PuTTY",
-        "MartinPrikryl.WinSCP",
+        "WinSCP.WinSCP",
         "Notepad++.Notepad++",
         "WireGuard.WireGuard",
-        "Microsoft.Sysinternals",
+        "Microsoft.Sysinternals.Suite",
         "WiresharkFoundation.Wireshark"
       ]
     }

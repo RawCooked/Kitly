@@ -17,7 +17,13 @@
 #
 # Using param() with [string] and [string[]] typed parameters tells PowerShell
 # exactly what types to expect. It NEVER splits strings into characters.
-# This is the correct, idiomatic, bulletproof solution.
+#
+# CRITICAL: [string[]] $Arguments alone only binds ONE positional token —
+# PowerShell does not auto-slurp remaining args into a trailing array
+# parameter. Without ValueFromRemainingArguments, every token after the
+# first (e.g. "kitly create b Git.Git vim" → only "b" reached $Arguments)
+# was silently dropped with no error. That's why `create` with more than
+# one package ID, and any multi-token flag like --dry-run, never worked.
 #
 # USAGE:
 #   kitly install essential    → $Command="install"  $Arguments=@("essential")
@@ -27,6 +33,8 @@
 
 param(
     [string]   $Command   = "",
+
+    [Parameter(ValueFromRemainingArguments = $true)]
     [string[]] $Arguments = @()
 )
 
@@ -70,11 +78,13 @@ function Show-KitlyHelp {
 
     $commands = @(
         @{ Cmd = "install [bundle|pkg]"; Desc = "Install a bundle or individual package" },
+        @{ Cmd = "install .. --dry-run"; Desc = "Preview an install without changing anything" },
         @{ Cmd = "list"; Desc = "List all available bundles" },
         @{ Cmd = "describe [bundle]"; Desc = "Show details of a specific bundle" },
         @{ Cmd = "search [keyword]"; Desc = "Search Winget for packages" },
         @{ Cmd = "create [name] [pkgs..]"; Desc = "Create a new custom bundle" },
         @{ Cmd = "update [bundle|pkg]"; Desc = "Update a bundle or package" },
+        @{ Cmd = "doctor"; Desc = "Diagnose winget, PATH, and config issues" },
         @{ Cmd = "fetch"; Desc = "Show system info and Kitly status" },
         @{ Cmd = "uninstall"; Desc = "Remove Kitly from your system" },
         @{ Cmd = "version"; Desc = "Show current Kitly version" },
@@ -385,13 +395,35 @@ switch ($resolvedCommand) {
 
     "install" {
         if (-not $Arguments -or $Arguments.Count -eq 0) {
-            Write-KitlyError "Usage: kitly install [bundle_name_or_package_id]"
+            Write-KitlyError "Usage: kitly install [bundle_name_or_package_id] [--dry-run]"
             exit 1
         }
-        $target = $Arguments[0]
+
+        $dryRun = $Arguments -contains "--dry-run"
+        $positional = @($Arguments | Where-Object { $_ -ne "--dry-run" })
+        if ($positional.Count -eq 0) {
+            Write-KitlyError "Usage: kitly install [bundle_name_or_package_id] [--dry-run]"
+            exit 1
+        }
+        $target = $positional[0]
         $config = Load-KitlyConfig
 
         Write-KitlyHeader "Installing: $target"
+
+        if (-not $dryRun -and -not (Test-KitlyIsAdmin)) {
+            Write-KitlyWarning "Not running as Administrator."
+            Write-KitlyMuted "Some packages require elevation and may fail to install as a result."
+            Write-Host ""
+        }
+
+        $stats = @{ Installed = 0; Skipped = 0; Failed = 0 }
+        function Record-KitlyResult($result) {
+            switch ($result) {
+                "installed" { $stats.Installed++ }
+                "skipped"   { $stats.Skipped++ }
+                "failed"    { $stats.Failed++ }
+            }
+        }
 
         $bundle = Get-KitlyBundle -Name $target -Config $config
         if ($bundle) {
@@ -399,15 +431,28 @@ switch ($resolvedCommand) {
             Write-KitlyInfo "Found bundle '$target' with $($packages.Count) packages."
             Write-Host ""
             foreach ($pkg in $packages) {
-                Install-WingetPackage -PackageId $pkg
+                $result = if ($dryRun) { Test-KitlyDryRunInstall -PackageId $pkg } else { Install-WingetPackage -PackageId $pkg }
+                Record-KitlyResult $result
             }
         } else {
             Write-KitlyInfo "No bundle named '$target' found. Treating as individual package ID..."
-            Install-WingetPackage -PackageId $target
+            $result = if ($dryRun) { Test-KitlyDryRunInstall -PackageId $target } else { Install-WingetPackage -PackageId $target }
+            Record-KitlyResult $result
         }
 
         Write-Host ""
-        Write-KitlyHeader "Installation Completed!"
+        Write-KitlyHeader $(if ($dryRun) { "Dry Run Complete" } else { "Installation Completed!" })
+        Write-Host "    $(if ($dryRun) { 'Would install' } else { 'Installed' }): " -ForegroundColor DarkGray -NoNewline
+        Write-Host "$($stats.Installed)" -ForegroundColor Green -NoNewline
+        Write-Host "   Already present: " -ForegroundColor DarkGray -NoNewline
+        Write-Host "$($stats.Skipped)" -ForegroundColor Cyan -NoNewline
+        if ($stats.Failed -gt 0) {
+            Write-Host "   Failed: " -ForegroundColor DarkGray -NoNewline
+            Write-Host "$($stats.Failed)" -ForegroundColor Red
+        } else {
+            Write-Host ""
+        }
+        Write-Host ""
     }
 
     "search" {
@@ -514,8 +559,14 @@ switch ($resolvedCommand) {
         }
         $target = $Arguments[0]
         $config = Load-KitlyConfig
-        
+
         Write-KitlyHeader "Updating: $target"
+
+        if (-not (Test-KitlyIsAdmin)) {
+            Write-KitlyWarning "Not running as Administrator."
+            Write-KitlyMuted "Some packages require elevation and may fail to update as a result."
+            Write-Host ""
+        }
 
         $bundle = Get-KitlyBundle -Name $target -Config $config
         if ($bundle) {
@@ -523,41 +574,13 @@ switch ($resolvedCommand) {
             Write-KitlyInfo "Found bundle '$target'. Updating $($packages.Count) packages..."
             Write-Host ""
             foreach ($pkg in $packages) {
-                Write-KitlyInfo "Upgrading $pkg..."
-                $arguments = "upgrade --exact --id `"$pkg`" --silent --accept-package-agreements --accept-source-agreements"
-                Write-KitlyMuted "winget $arguments"
-                
-                try {
-                    $process = Start-Process winget -ArgumentList $arguments -Wait -NoNewWindow -PassThru -ErrorAction Stop
-                    if ($process.ExitCode -eq 0) {
-                        Write-KitlySuccess "Upgraded '$pkg' successfully!"
-                    } elseif ($process.ExitCode -in @(2316632070, -1978335226, -1978335189, 2316632107)) {
-                        Write-KitlySuccess "'$pkg' is already up to date!"
-                    } else {
-                        Write-KitlyWarning "'$pkg' could not be upgraded (Exit code: $($process.ExitCode))."
-                    }
-                } catch {
-                    Write-KitlyWarning "Failed to execute winget for '$pkg'."
-                }
+                Update-WingetPackage -PackageId $pkg | Out-Null
             }
         } else {
             Write-KitlyInfo "No bundle named '$target'. Attempting winget upgrade..."
-            $arguments = "upgrade --exact --id `"$target`" --silent --accept-package-agreements --accept-source-agreements"
-            
-            try {
-                $process = Start-Process winget -ArgumentList $arguments -Wait -NoNewWindow -PassThru -ErrorAction Stop
-                if ($process.ExitCode -eq 0) {
-                    Write-KitlySuccess "Upgraded '$target' successfully!"
-                } elseif ($process.ExitCode -in @(2316632070, -1978335226, -1978335189, 2316632107)) {
-                    Write-KitlySuccess "'$target' is already up to date!"
-                } else {
-                    Write-KitlyWarning "'$target' could not be upgraded (Exit code: $($process.ExitCode))."
-                }
-            } catch {
-                Write-KitlyWarning "Failed to execute winget for '$target'."
-            }
+            Update-WingetPackage -PackageId $target | Out-Null
         }
-        
+
         Write-Host ""
         Write-KitlyHeader "Update Completed!"
     }
@@ -565,6 +588,44 @@ switch ($resolvedCommand) {
     "generate-docs" {
         Write-KitlyHeader "Generating Documentation"
         Generate-PacksMd
+    }
+
+    "doctor" {
+        Write-KitlyHeader "Kitly Doctor"
+
+        try {
+            $wv = winget --version 2>$null
+            if ($wv) {
+                Write-KitlySuccess "winget found: $wv"
+            } else {
+                throw "not found"
+            }
+        } catch {
+            Write-KitlyError "winget not found or not in PATH. Install it from https://aka.ms/getwinget"
+        }
+
+        if (Test-KitlyIsAdmin) {
+            Write-KitlySuccess "Running as Administrator."
+        } else {
+            Write-KitlyWarning "Not running as Administrator. Some package installs/updates may fail."
+        }
+
+        $pathEntries = ($env:Path -split ";") | ForEach-Object { $_.TrimEnd("\") }
+        if ($pathEntries -icontains $global:PSScriptRoot.TrimEnd("\")) {
+            Write-KitlySuccess "Kitly folder is in PATH ($global:PSScriptRoot)."
+        } else {
+            Write-KitlyWarning "Kitly folder is NOT in PATH ($global:PSScriptRoot)."
+            Write-KitlyMuted "The 'kitly' command may not be recognized in new terminals. Re-run the installer or add it manually."
+        }
+
+        $config = Load-KitlyConfig
+        if ($config -and $config.bundles) {
+            Write-KitlySuccess "packages.json loaded ($(Get-KitlyBundleCount) bundles, $(Get-KitlyPackageCount) packages)."
+        } else {
+            Write-KitlyError "packages.json is missing or invalid at $global:PSScriptRoot."
+        }
+
+        Write-Host ""
     }
 
     default {

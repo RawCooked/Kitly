@@ -10,7 +10,13 @@
       "Bash(powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\admin\\\\Documents\\\\Github\\\\Kitly\\\\core.ps1\" --help)",
       "Bash(powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\admin\\\\Documents\\\\Github\\\\Kitly\\\\core.ps1\" -v)",
       "Bash(powershell.exe -NoProfile -ExecutionPolicy Bypass -File \"C:\\\\Users\\\\admin\\\\Documents\\\\Github\\\\Kitly\\\\core.ps1\" install essential)",
-      "mcp__Claude_Preview__preview_start"
+      "mcp__Claude_Preview__preview_start",
+      "PowerShell(winget search Excalidraw)",
+      "PowerShell(winget search WizTree)",
+      "PowerShell(winget search Helium)",
+      "PowerShell(winget search nvm)",
+      "PowerShell(winget search WhatsApp)",
+      "PowerShell(winget search FreeCAD)"
     ]
   }
 }
