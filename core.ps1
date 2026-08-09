@@ -1,4 +1,4 @@
-﻿<#
+<#
 .SYNOPSIS
     Kitly — A modern, lightweight package bundle installer for Windows using Winget.
 .DESCRIPTION
